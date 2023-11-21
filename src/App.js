@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [podaci, setPodaci] = useState([]);
+  const targetDate = "2022-11-15";
+
+  useEffect(() => {
+    fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${targetDate}`)
+      .then((response) => response.json())
+      .then((nasaData) => setPodaci(nasaData));
+  }, [targetDate]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>-Slika dana-</h1>
+      <h1>{podaci.title}</h1>
+      <img src={podaci.url} alt={podaci.title} />
+      <p>{podaci.explanation}</p>
+      <p>Copyright: {podaci.copyright}</p>
+      <p>Date: {podaci.date}</p>
     </div>
   );
 }
